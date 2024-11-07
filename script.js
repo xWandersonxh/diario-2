@@ -1,5 +1,5 @@
 // Senhas para o líder e para os alunos
-const leaderPassword = "105856493"; // Senha do líder de sala
+const leaderPassword = "lider123"; // Senha do líder de sala
 const studentPassword = "aluno123"; // Senha dos alunos
 
 // Variável para verificar o tipo de usuário
