@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Eletrônico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Diário Eletrônico Da 101</h1>
+
+        <!-- Formulário de Login -->
+        <div id="login-section">
+            <input type="password" id="password" placeholder="Digite sua senha" required>
+            <button onclick="login()">Entrar</button>
+        </div>
+
+        <!-- Seção de Entrada de Atividade -->
+        <div class="input-section" id="input-section" style="display: none;">
+            <input type="text" id="activity" placeholder="Atividade" required>
+            <input type="date" id="dueDate" required>
+            <button onclick="addActivity()">Adicionar Atividade</button>
+        </div>
+
+        <h2>Atividades</h2>
+        <ul id="activityList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
