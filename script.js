@@ -1,5 +1,5 @@
 // Senhas para o líder e para os alunos
-const leaderPassword = "lider123"; // Senha do líder de sala
+const leaderPassword = "105856493"; // Senha do líder de sala
 const studentPassword = "aluno123"; // Senha dos alunos
 
 // Variável para verificar o tipo de usuário
@@ -8,23 +8,23 @@ let isLeader = false;
 // Função de Login
 function login() {
     const password = document.getElementById("password").value;
-    
+
+    // Verifica a senha inserida
     if (password === leaderPassword) {
         isLeader = true;
         document.getElementById("login-section").style.display = "none";
         document.getElementById("input-section").style.display = "flex";
         alert("Bem-vindo, líder de sala!");
+        loadActivities(); // Carrega as atividades após login bem-sucedido
     } else if (password === studentPassword) {
         isLeader = false;
         document.getElementById("login-section").style.display = "none";
         document.getElementById("input-section").style.display = "none";
         alert("Bem-vindo, aluno! Você pode visualizar as atividades.");
+        loadActivities(); // Carrega as atividades após login bem-sucedido
     } else {
         alert("Senha incorreta. Tente novamente.");
     }
-
-    // Carrega atividades do localStorage ao fazer login
-    loadActivities();
 }
 
 // Função para adicionar atividade (apenas para o líder)
@@ -110,6 +110,3 @@ function removeActivity(activityText) {
     activities = activities.filter(activity => activity.text !== activityText);
     localStorage.setItem("activities", JSON.stringify(activities));
 }
-
-// Carrega as atividades ao abrir a página
-window.onload = loadActivities;
