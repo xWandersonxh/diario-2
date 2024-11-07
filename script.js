@@ -8,7 +8,7 @@ let isLeader = false;
 // Função de Login
 function login() {
     const password = document.getElementById("password").value;
-
+    
     if (password === leaderPassword) {
         isLeader = true;
         document.getElementById("login-section").style.display = "none";
@@ -22,6 +22,9 @@ function login() {
     } else {
         alert("Senha incorreta. Tente novamente.");
     }
+
+    // Carrega atividades do localStorage ao fazer login
+    loadActivities();
 }
 
 // Função para adicionar atividade (apenas para o líder)
@@ -33,7 +36,7 @@ function addActivity() {
 
     const activityInput = document.getElementById("activity");
     const dueDateInput = document.getElementById("dueDate");
-
+    
     const activityText = activityInput.value;
     const dueDate = dueDateInput.value;
 
@@ -42,16 +45,33 @@ function addActivity() {
         return;
     }
 
-    const activityItem = document.createElement("li");
-    activityItem.innerHTML = `
-        <span>${activityText} - Data de entrega: ${dueDate}</span>
+    const activityItem = {
+        text: activityText,
+        dueDate: dueDate
+    };
+
+    // Salva a atividade no localStorage
+    saveActivity(activityItem);
+
+    // Adiciona a atividade na interface
+    displayActivity(activityItem);
+
+    // Limpa os campos de entrada
+    activityInput.value = "";
+    dueDateInput.value = "";
+}
+
+// Função para exibir uma atividade na lista
+function displayActivity(activityItem) {
+    const activityList = document.getElementById("activityList");
+
+    const activityElement = document.createElement("li");
+    activityElement.innerHTML = `
+        <span>${activityItem.text} - Data de entrega: ${activityItem.dueDate}</span>
         ${isLeader ? '<span class="delete-btn" onclick="deleteActivity(this)">&#10006;</span>' : ''}
     `;
 
-    document.getElementById("activityList").appendChild(activityItem);
-
-    activityInput.value = "";
-    dueDateInput.value = "";
+    activityList.appendChild(activityElement);
 }
 
 // Função para excluir atividade (apenas para o líder)
@@ -60,5 +80,36 @@ function deleteActivity(element) {
         alert("Apenas o líder pode remover atividades.");
         return;
     }
-    element.parentElement.remove();
+
+    const activityElement = element.parentElement;
+    const activityText = activityElement.innerText.split(" - Data de entrega: ")[0];
+
+    // Remove a atividade do localStorage
+    removeActivity(activityText);
+
+    // Remove a atividade da interface
+    activityElement.remove();
 }
+
+// Função para salvar uma atividade no localStorage
+function saveActivity(activityItem) {
+    const activities = JSON.parse(localStorage.getItem("activities")) || [];
+    activities.push(activityItem);
+    localStorage.setItem("activities", JSON.stringify(activities));
+}
+
+// Função para carregar atividades do localStorage e exibi-las na interface
+function loadActivities() {
+    const activities = JSON.parse(localStorage.getItem("activities")) || [];
+    activities.forEach(activityItem => displayActivity(activityItem));
+}
+
+// Função para remover uma atividade do localStorage
+function removeActivity(activityText) {
+    let activities = JSON.parse(localStorage.getItem("activities")) || [];
+    activities = activities.filter(activity => activity.text !== activityText);
+    localStorage.setItem("activities", JSON.stringify(activities));
+}
+
+// Carrega as atividades ao abrir a página
+window.onload = loadActivities;
